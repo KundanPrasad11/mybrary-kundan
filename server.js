@@ -19,8 +19,9 @@ app.use(expressLayouts)
 //tell our app where our public files (styles, sheets, images, html) are gonna be
 app.use(express.static("public"))
 
+// setting up connection with mongodb
 const mongoose = require("mongoose")
-mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true})
+mongoose.connect(process.env.DATABASE_URL)
 const db = mongoose.connection
 db.on("error", error => console.log(error))
 db.once("open", () => console.log("connected to mongoose"))
