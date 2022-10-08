@@ -5,8 +5,10 @@ if(process.env.NODE_ENV !== "production") {
 const express = require("express")
 const app = express()
 const expressLayouts = require("express-ejs-layouts")
+var bodyParser = require('body-parser')
 
 const indexRouter = require("./routes/index")
+const authorRouter = require("./routes/author")
 
 //tell our app which view-engine we are using
 app.set("view engine", "ejs")
@@ -18,6 +20,8 @@ app.set("layout", "layouts/layout")
 app.use(expressLayouts)
 //tell our app where our public files (styles, sheets, images, html) are gonna be
 app.use(express.static("public"))
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }))
 
 // setting up connection with mongodb
 const mongoose = require("mongoose")
@@ -27,6 +31,7 @@ db.on("error", error => console.log(error))
 db.once("open", () => console.log("connected to mongoose"))
 
 app.use('/', indexRouter)
+app.use('/author', authorRouter)
 
 //
 app.listen(process.env.PORT || 3000)
